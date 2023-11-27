@@ -13,6 +13,7 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
+    implementation("org.mongodb:bson:4.11.0")
     testImplementation(kotlin("test"))
 }
 

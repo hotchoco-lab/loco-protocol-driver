@@ -1,5 +1,7 @@
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import org.hotchoco.loco.protocol.LocoHeader
 import org.hotchoco.loco.protocol.LocoMethod
 import org.hotchoco.loco.protocol.LocoProtocol
@@ -30,21 +32,26 @@ class ProtocolTest {
 
     @Test
     fun testLocoProtocol() {
-        val protocol = LocoProtocol(
+        val protocol = LocoProtocol.wrap(
             header = LocoHeader(
                 packetId = 1,
                 status = 0,
                 method = LocoMethod.wrap("WRITE")
             ),
-            body = Json.encodeToJsonElement(
-                WriteRequest.serializer(),
-                WriteRequest(
-                    message = "Hello, World!"
-                )
-            )
+            body = buildJsonObject {
+                put("message", "Hello, World!")
+            }
         )
 
         println(protocol)
+
+        val data = protocol.toByteArray()
+
+        println(data)
+
+        val parsedProtocol = LocoProtocol.parse(data)
+
+        println(parsedProtocol)
     }
 
 }
